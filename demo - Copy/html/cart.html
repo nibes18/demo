@@ -43,11 +43,13 @@
             };
 
             // Send order to admin page
-            localStorage.setItem('order', JSON.stringify(order));
-            alert('Order placed successfully!');
+            let orders = JSON.parse(localStorage.getItem('orders')) || [];
+            orders.push(order);
+            localStorage.setItem('orders', JSON.stringify(orders));
+
+            alert('Order placed successfully! Waiting for admin confirmation.');
             localStorage.removeItem('cart'); // Clear cart after placing order
             updateCartCount(); // Update cart count display
-            // Optionally, you can display a message to the user that the order has been placed
         });
 
         function updateCartCount() {
@@ -109,10 +111,19 @@
 
             renderCart();
         });
+
+        // Listen for order acceptance
+        window.addEventListener('storage', function(event) {
+            if (event.key === 'orderStatus' && event.newValue === 'accepted') {
+                alert('Your order has been accepted!');
+                window.location.reload();
+            }
+        });
     </script>
     <div class="home-box" onclick="window.location.href='index.html'">
         <span>Home</span>
     </div>
 </body>
 </html>
+
 
