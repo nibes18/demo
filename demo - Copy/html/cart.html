@@ -36,10 +36,11 @@
                 return;
             }
 
-            // Create an order object
+            // Create an order object with a status of "pending"
             const order = {
                 items: cart,
-                timestamp: new Date().toISOString()
+                timestamp: new Date().toISOString(),
+                status: 'pending'
             };
 
             // Send order to admin page
@@ -125,5 +126,6 @@
     </div>
 </body>
 </html>
+
 
 
