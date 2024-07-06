@@ -4,32 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - View Orders</title>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const ordersList = document.getElementById('ordersList');
-            const currentOrder = JSON.parse(localStorage.getItem('currentOrder'));
-
-            if (currentOrder) {
-                const li = document.createElement('li');
-                li.textContent = `Items: ${currentOrder.items.map(item => item.product).join(', ')}, Timestamp: ${new Date(currentOrder.timestamp).toLocaleString()}`;
-                const acceptButton = document.createElement('button');
-                acceptButton.textContent = 'Accepted';
-                acceptButton.addEventListener('click', function() {
-                    alert('Order accepted!');
-                    localStorage.removeItem('currentOrder'); // Clear the order after acceptance
-                    ordersList.innerHTML = ''; // Clear the displayed order
-                    window.localStorage.setItem('orderStatus', 'accepted'); // Notify customer
-                });
-                li.appendChild(acceptButton);
-                ordersList.appendChild(li);
-            } else {
-                ordersList.textContent = 'No new orders.';
-            }
-        });
-    </script>
 </head>
 <body>
     <h1>Order List</h1>
     <ul id="ordersList"></ul>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const ordersList = document.getElementById('ordersList');
+            const order = JSON.parse(localStorage.getItem('order'));
+
+            if (order) {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <div>Order ID: auto-generated, Items: ${order.items.map(item => item.product).join(', ')}, Timestamp: ${new Date(order.timestamp).toLocaleString()}</div>
+                    <button onclick="acceptOrder()">Accept</button>
+                `;
+                ordersList.appendChild(li);
+            }
+        });
+
+        function acceptOrder() {
+            alert('Order accepted');
+            localStorage.setItem('orderStatus', 'accepted');
+        }
+    </script>
 </body>
 </html>
+
