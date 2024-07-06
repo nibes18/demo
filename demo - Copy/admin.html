@@ -4,29 +4,95 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - View Orders</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .order-list {
+            margin: 0 auto;
+            max-width: 800px;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        .order-list th, .order-list td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        .order-list th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .order-list tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .order-list tr:hover {
+            background-color: #ddd;
+        }
+        .accept-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
     <h1>Order List</h1>
-    <ul id="ordersList"></ul>
+    <table class="order-list" id="ordersList">
+        <thead>
+            <tr>
+                <th>Dish Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total Price</th>
+                <th>Timestamp</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Orders will be injected here -->
+        </tbody>
+    </table>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const ordersList = document.getElementById('ordersList');
-            const order = JSON.parse(localStorage.getItem('order'));
+            const ordersList = document.getElementById('ordersList').getElementsByTagName('tbody')[0];
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
 
-            if (order) {
-                const li = document.createElement('li');
-                li.innerHTML = `
-                    <div>Order ID: auto-generated, Items: ${order.items.map(item => item.product).join(', ')}, Timestamp: ${new Date(order.timestamp).toLocaleString()}</div>
-                    <button onclick="acceptOrder()">Accept</button>
-                `;
-                ordersList.appendChild(li);
+            if (orders.length > 0) {
+                orders.forEach((order, index) => {
+                    order.items.forEach(item => {
+                        const row = ordersList.insertRow();
+                        row.innerHTML = `
+                            <td>${item.product}</td>
+                            <td>$${item.price}</td>
+                            <td>${item.quantity}</td>
+                            <td>$${(item.price * item.quantity).toFixed(2)}</td>
+                            <td>${new Date(order.timestamp).toLocaleString()}</td>
+                            <td><button class="accept-btn" onclick="acceptOrder(${index})">Accept</button></td>
+                        `;
+                    });
+                });
+            } else {
+                const row = ordersList.insertRow();
+                row.innerHTML = `<td colspan="6">No orders found.</td>`;
             }
         });
 
-        function acceptOrder() {
+        function acceptOrder(index) {
             alert('Order accepted');
             localStorage.setItem('orderStatus', 'accepted');
+            localStorage.removeItem('orders');
+            location.reload(); // Refresh the admin page to remove the accepted order
         }
     </script>
 </body>
