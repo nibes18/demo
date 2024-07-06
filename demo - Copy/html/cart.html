@@ -42,12 +42,12 @@
                 timestamp: new Date().toISOString()
             };
 
-            // Save order to localStorage
-            localStorage.setItem('currentOrder', JSON.stringify(order));
+            // Send order to admin page
+            localStorage.setItem('order', JSON.stringify(order));
             alert('Order placed successfully!');
             localStorage.removeItem('cart'); // Clear cart after placing order
             updateCartCount(); // Update cart count display
-            window.location.href = 'admin.html'; // Redirect to admin page to view orders
+            // Optionally, you can display a message to the user that the order has been placed
         });
 
         function updateCartCount() {
@@ -56,9 +56,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', updateCartCount);
-    </script>
 
-    <script>
         document.addEventListener('DOMContentLoaded', function () {
             let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
             const cartTableBody = document.getElementById('cart-items');
@@ -117,3 +115,4 @@
     </div>
 </body>
 </html>
+
