@@ -36,28 +36,11 @@
                 });
             });
         });
-
-        // Store cart data to Firestore when order button is clicked
-        document.getElementById('orderButton').addEventListener('click', function() {
-            const cart = JSON.parse(localStorage.getItem('cart')) || {};
-            const items = Object.keys(cart).map(product => ({ product, quantity: cart[product] }));
-            const timestamp = new Date();
-
-            db.collection('orders').add({ items, timestamp })
-                .then(() => {
-                    console.log('Order stored successfully!');
-                    localStorage.removeItem('cart'); // Clear cart after storing order
-                    window.location.href = 'admin.html'; // Redirect to admin page to view orders
-                })
-                .catch(error => {
-                    console.error('Error storing order: ', error);
-                });
-        });
     </script>
 </head>
 <body>
     <h1>Order List</h1>
     <ul id="ordersList"></ul>
-    <button id="orderButton">Place Order</button> <!-- Add an order button for placing orders -->
 </body>
 </html>
+
