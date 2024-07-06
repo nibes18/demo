@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="menu-item" onclick="location.href='products.html?category=chinese'">
+        <div class="shape-container">
+            <img src="path/to/shape.svg" alt="Shape">
+        </div>
+        <div class="label">Chinese Starters</div>
+    </div>
+    <div class="menu-item" onclick="location.href='products.html?category=falooda'">
+        <div class="shape-container">
+            <img src="path/to/shape.svg" alt="Shape">
+        </div>
+        <div class="label">Falooda</div>
+    </div>
+    <div class="menu-item" onclick="location.href='products.html?category=signature_kunafa'">
+        <div class="shape-container">
+            <img src="path/to/shape.svg" alt="Shape">
+        </div>
+        <div class="label">Signature Kunafa</div>
+    </div>
+    <div class="menu-item" onclick="location.href='products.html?category=dry_fruit_kunafa'">
+        <div class="shape-container">
+            <img src="path/to/shape.svg" alt="Shape">
+        </div>
+        <div class="label">Dry Fruit Kunafa</div>
+    </div>
+    <div class="menu-item" onclick="location.href='products.html?category=chocolate_kunafa'">
+        <div class="shape-container">
+            <img src="path/to/shape.svg" alt="Shape">
+        </div>
+        <div class="label">Chocolate Kunafa</div>
+    </div>
+    <div class="cart-box" onclick="location.href='cart.html'">
+        Cart
+        <div class="cart-count">0</div>
+    </div>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        document.querySelector('.cart-count').textContent = cart.length;
+    });
+</script>
+</html>
