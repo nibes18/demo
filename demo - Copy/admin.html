@@ -55,6 +55,7 @@
                 <th>Quantity</th>
                 <th>Total Price</th>
                 <th>Timestamp</th>
+                <th>Status</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -78,21 +79,24 @@
                             <td>${item.quantity}</td>
                             <td>$${(item.price * item.quantity).toFixed(2)}</td>
                             <td>${new Date(order.timestamp).toLocaleString()}</td>
-                            <td><button class="accept-btn" onclick="acceptOrder(${index})">Accept</button></td>
+                            <td>${order.status}</td>
+                            <td>${order.status === 'pending' ? `<button class="accept-btn" onclick="acceptOrder(${index})">Accept</button>` : ''}</td>
                         `;
                     });
                 });
             } else {
                 const row = ordersList.insertRow();
-                row.innerHTML = `<td colspan="6">No orders found.</td>`;
+                row.innerHTML = `<td colspan="7">No orders found.</td>`;
             }
         });
 
         function acceptOrder(index) {
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            orders[index].status = 'accepted';
+            localStorage.setItem('orders', JSON.stringify(orders));
             alert('Order accepted');
             localStorage.setItem('orderStatus', 'accepted');
-            localStorage.removeItem('orders');
-            location.reload(); // Refresh the admin page to remove the accepted order
+            window.location.reload(); // Refresh the admin page to reflect the accepted order
         }
     </script>
 </body>
