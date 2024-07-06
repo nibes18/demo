@@ -43,6 +43,9 @@
             border-radius: 5px;
             margin-top: 10px;
         }
+        .order-divider {
+            border-top: 2px solid #4CAF50;
+        }
     </style>
 </head>
 <body>
@@ -83,6 +86,11 @@
                             <td>${order.status === 'pending' ? `<button class="accept-btn" onclick="acceptOrder(${index})">Accept</button>` : ''}</td>
                         `;
                     });
+
+                    // Add a divider row after each order
+                    const dividerRow = ordersList.insertRow();
+                    dividerRow.classList.add('order-divider');
+                    dividerRow.innerHTML = `<td colspan="7"></td>`;
                 });
             } else {
                 const row = ordersList.insertRow();
