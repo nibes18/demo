@@ -27,6 +27,7 @@
         <div class="cart-count" id="cartCount">0</div>
     </div>
     <button id="placeOrderButton">Place Order</button>
+    <div id="orderStatus"></div>
 
     <script>
         document.getElementById('placeOrderButton').addEventListener('click', function() {
@@ -36,21 +37,30 @@
                 return;
             }
 
-            // Create an order object with a status of "pending"
+            // Create an order object
             const order = {
                 items: cart,
-                timestamp: new Date().toISOString(),
-                status: 'pending'
+                timestamp: new Date().toISOString()
             };
 
-            // Send order to admin page
-            let orders = JSON.parse(localStorage.getItem('orders')) || [];
-            orders.push(order);
-            localStorage.setItem('orders', JSON.stringify(orders));
-
-            alert('Order placed successfully! Waiting for admin confirmation.');
-            localStorage.removeItem('cart'); // Clear cart after placing order
-            updateCartCount(); // Update cart count display
+            // Send order to the server
+            fetch('http://localhost:3000/place-order', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(order),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('orderStatus').innerText = 'Order placed successfully!';
+                localStorage.removeItem('cart'); // Clear cart after placing order
+                updateCartCount(); // Update cart count display
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                document.getElementById('orderStatus').innerText = 'Failed to place order.';
+            });
         });
 
         function updateCartCount() {
@@ -59,7 +69,9 @@
         }
 
         document.addEventListener('DOMContentLoaded', updateCartCount);
+    </script>
 
+    <script>
         document.addEventListener('DOMContentLoaded', function () {
             let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
             const cartTableBody = document.getElementById('cart-items');
@@ -112,20 +124,14 @@
 
             renderCart();
         });
-
-        // Listen for order acceptance
-        window.addEventListener('storage', function(event) {
-            if (event.key === 'orderStatus' && event.newValue === 'accepted') {
-                alert('Your order has been accepted!');
-                window.location.reload();
-            }
-        });
     </script>
+
     <div class="home-box" onclick="window.location.href='index.html'">
         <span>Home</span>
     </div>
 </body>
 </html>
+
 
 
 
