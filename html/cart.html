@@ -52,14 +52,11 @@
                 body: JSON.stringify(order),
             })
             .then(response => response.json())
-            .then(data => {
-                document.getElementById('orderStatus').innerText = 'Order placed successfully!';
-                localStorage.removeItem('cart'); // Clear cart after placing order
-                updateCartCount(); // Update cart count display
-                setTimeout(() => {
-                    window.location.href = 'admin.html';
-                }, 2000); // Redirect to admin.html after 2 seconds
-            })
+    .then(data => {
+        document.getElementById('orderStatus').innerText = 'Order placed successfully!';
+        localStorage.removeItem('cart'); // Clear cart after placing order
+        updateCartCount(); // Update cart count display
+    })
             .catch((error) => {
                 console.error('Error:', error);
                 document.getElementById('orderStatus').innerText = 'Failed to place order.';
